@@ -70,16 +70,20 @@ def train(args):
     # Write performance metrics to file
     output_dir = "performance-metric-path"
     output_file = f"{output_dir}/{subject}.txt"
+    
+    num_classes = 152
 
     # Load data
-    X, Y = load_data(root_dir, 152)
+    X, Y = load_data(root_dir, num_classes)
+    print("X shape: ", X.shape)
+    print("Y shape: ", Y.shape)
+
     # Dataloader
     train_loader, test_loader = get_dataloader(
         X, Y, batch_size, batch_size2, seed, shuffle=True
     )
 
     # Define model
-    num_classes = 13
     channels = X.shape[1]
 
     n_T = 1000
@@ -258,10 +262,12 @@ if __name__ == "__main__":
     parser.add_argument(
         "--device", type=str, default="cuda:0", help="Device to use (default: cuda:0)"
     )
-
+    args = parser.parse_args() 
+    args.subject = 1
+    train(args)
     # Parse command-line arguments
-    args = parser.parse_args()
-    for i in range(2, args.num_subjects + 1):
-        subject = i
-        args.subject = subject
-        train(args)
+    # args = parser.parse_args()
+    # for i in range(2, args.num_subjects + 1):
+    #     subject = i
+    #     args.subject = subject
+    #     train(args)
