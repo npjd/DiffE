@@ -66,10 +66,10 @@ def train(args):
     print("Random Seed: ", seed)
 
     # EEG data path
-    root_dir = "Path-to-the-data"
+    root_dir = "single_word_mouthed"
     # Write performance metrics to file
-    # output_dir = "performance-metric-path"
-    # output_file = f"{output_dir}/{subject}.txt"
+    output_dir = "performance-metric-path"
+    output_file = f"{output_dir}/{subject}.txt"
 
     # Load data
     X, Y = load_data(root_dir=root_dir, subject=subject, session=1)
@@ -207,7 +207,7 @@ def train(args):
 
                     if best_acc_bool:
                         best_acc = acc
-                        # torch.save(diffe.state_dict(), f'./models/diffe_{subject}.pt')
+                        torch.save(diffe.state_dict(), f'./models/diffe_{subject}.pt')
                     if best_f1_bool:
                         best_f1 = f1
                     if best_recall_bool:
@@ -217,31 +217,31 @@ def train(args):
                     if best_auc_bool:
                         best_auc = auc
 
-                    # print("Subject: {0}".format(subject))
-                    # # print("ddpm test loss: {0:.4f}".format(t_test_loss_ddpm/len(test_generator)))
-                    # # print("encoder test loss: {0:.4f}".format(t_test_loss_ed/len(test_generator)))
-                    # print("accuracy:  {0:.2f}%".format(acc*100), "best: {0:.2f}%".format(best_acc*100))
-                    # print("f1-score:  {0:.2f}%".format(f1*100), "best: {0:.2f}%".format(best_f1*100))
-                    # print("recall:    {0:.2f}%".format(recall*100), "best: {0:.2f}%".format(best_recall*100))
-                    # print("precision: {0:.2f}%".format(precision*100), "best: {0:.2f}%".format(best_precision*100))
-                    # print("auc:       {0:.2f}%".format(auc*100), "best: {0:.2f}%".format(best_auc*100))
+                    print("Subject: {0}".format(subject))
+                    # print("ddpm test loss: {0:.4f}".format(t_test_loss_ddpm/len(test_generator)))
+                    # print("encoder test loss: {0:.4f}".format(t_test_loss_ed/len(test_generator)))
+                    print("accuracy:  {0:.2f}%".format(acc*100), "best: {0:.2f}%".format(best_acc*100))
+                    print("f1-score:  {0:.2f}%".format(f1*100), "best: {0:.2f}%".format(best_f1*100))
+                    print("recall:    {0:.2f}%".format(recall*100), "best: {0:.2f}%".format(best_recall*100))
+                    print("precision: {0:.2f}%".format(precision*100), "best: {0:.2f}%".format(best_precision*100))
+                    print("auc:       {0:.2f}%".format(auc*100), "best: {0:.2f}%".format(best_auc*100))
                     # writer.add_scalar(f"EEGNet/Accuracy/subject_{subject}", acc*100, epoch)
                     # writer.add_scalar(f"EEGNet/F1-score/subject_{subject}", f1*100, epoch)
                     # writer.add_scalar(f"EEGNet/Recall/subject_{subject}", recall*100, epoch)
                     # writer.add_scalar(f"EEGNet/Precision/subject_{subject}", precision*100, epoch)
                     # writer.add_scalar(f"EEGNet/AUC/subject_{subject}", auc*100, epoch)
 
-                    # if best_acc_bool or best_f1_bool or best_recall_bool or best_precision_bool or best_auc_bool:
-                    #     performance = {'subject': subject,
-                    #                 'epoch': epoch,
-                    #                 'accuracy': best_acc*100,
-                    #                 'f1_score': best_f1*100,
-                    #                 'recall': best_recall*100,
-                    #                 'precision': best_precision*100,
-                    #                 'auc': best_auc*100
-                    #                 }
-                    #     with open(output_file, 'a') as f:
-                    #         f.write(f"{performance['subject']}, {performance['epoch']}, {performance['accuracy']}, {performance['f1_score']}, {performance['recall']}, {performance['precision']}, {performance['auc']}\n")
+                    if best_acc_bool or best_f1_bool or best_recall_bool or best_precision_bool or best_auc_bool:
+                        performance = {'subject': subject,
+                                    'epoch': epoch,
+                                    'accuracy': best_acc*100,
+                                    'f1_score': best_f1*100,
+                                    'recall': best_recall*100,
+                                    'precision': best_precision*100,
+                                    'auc': best_auc*100
+                                    }
+                        with open(output_file, 'a') as f:
+                            f.write(f"{performance['subject']}, {performance['epoch']}, {performance['accuracy']}, {performance['f1_score']}, {performance['recall']}, {performance['precision']}, {performance['auc']}\n")
                     description = f"Best accuracy: {best_acc*100:.2f}%"
                     pbar.set_description(
                         f"Method ALL - Processing subject {subject} - {description}"
