@@ -1,6 +1,6 @@
 from models import *
 from utils import *
-
+from custom_utils import load_data
 import random
 import argparse
 import numpy as np
@@ -72,7 +72,7 @@ def train(args):
     output_file = f"{output_dir}/{subject}.txt"
 
     # Load data
-    X, Y = load_data(root_dir=root_dir, subject=subject, session=1)
+    X, Y = load_data(root_dir, 152)
     # Dataloader
     train_loader, test_loader = get_dataloader(
         X, Y, batch_size, batch_size2, seed, shuffle=True
