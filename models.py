@@ -93,7 +93,7 @@ class UnetDown(nn.Module):
 
     def forward(self, x):
         x = self.layer(x)
-        x = self.pool(x)
+        x = self.pool(x)[:, :, :712] # slice last dim to 712
         return x
 
 
@@ -163,13 +163,14 @@ class ConditionalUNet(nn.Module):
         down1 = self.down1(x)  # 2000 -> 1000
         down2 = self.down2(down1)  # 1000 -> 500
         down3 = self.down3(down2)  # 500 -> 250
-
+        
         temb = self.sin_emb(t).view(-1, self.n_feat, 1)  # [b, n_feat, 1]
 
         up1 = self.up2(down3)  # 250 -> 500
         up2 = self.up3(torch.cat([up1 + temb, down2], 1))  # 500 -> 1000
         up3 = self.up4(torch.cat([up2 + temb, down1], 1))  # 1000 -> 2000
-        out = self.out(torch.cat([up3, x], 1))  # 2000 -> 2000
+
+        out = self.out(torch.cat([up3, x[:,:,:1424]], 1))  # 2000 -> 2000
 
         down = (down1, down2, down3)
         up = (up1, up2, up3)

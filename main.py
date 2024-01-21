@@ -163,12 +163,15 @@ def train(args):
 
             ############################## Train ###########################################
             for x, y in train_loader:
-                x, y = x.type(torch.FloatTensor).to(device), y.type(torch.LongTensor).to(device)
+                x, y = x[:,:,:1424].type(torch.FloatTensor).to(device), y.type(torch.LongTensor).to(device)
                 
                 y_cat = F.one_hot(y, num_classes=13).type(torch.FloatTensor).to(device)
                 # Train DDPM
                 optim1.zero_grad()
                 x_hat, down, up, noise, t = ddpm(x)
+
+                print(f"x_hat size: {x_hat.size()}")
+                print(f"x size: {x.size()}")
 
                 loss_ddpm = F.l1_loss(x_hat, x, reduction="none")
                 loss_ddpm.mean().backward()
