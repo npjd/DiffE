@@ -75,6 +75,10 @@ def train(args):
 
     # Load data
     X, Y = load_data(root_dir, num_classes)
+    
+
+    X = np.transpose(X, (0,2,1))
+
     print("X shape: ", X.shape)
     print("Y shape: ", Y.shape)
 
@@ -94,7 +98,7 @@ def train(args):
     ddpm_model = ConditionalUNet(in_channels=channels, n_feat=ddpm_dim).to(device)
     ddpm = DDPM(nn_model=ddpm_model, betas=(1e-6, 1e-2), n_T=n_T, device=device).to(
         device
-    )
+    ) 
     encoder = Encoder(in_channels=channels, dim=encoder_dim).to(device)
     decoder = Decoder(
         in_channels=channels, n_feat=ddpm_dim, encoder_dim=encoder_dim
