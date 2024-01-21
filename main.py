@@ -163,7 +163,8 @@ def train(args):
 
             ############################## Train ###########################################
             for x, y in train_loader:
-                x, y = x.to(device), y.type(torch.LongTensor).to(device)
+                x, y = x.type(torch.FloatTensor).to(device), y.type(torch.LongTensor).to(device)
+                
                 y_cat = F.one_hot(y, num_classes=13).type(torch.FloatTensor).to(device)
                 # Train DDPM
                 optim1.zero_grad()
